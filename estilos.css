@@ -149,4 +149,24 @@ body[data-tema='negro'] {
   color: var(--titulo);
   opacity: 0.8;
 }
+/* Estilos para mostrar nombre de usuario y botones */
+#user-info {
+  font-weight: bold;
+  margin-right: 10px;
+}
+
+#login,
+#logout {
+  padding: 5px 10px;
+  background-color: var(--btn-bg);
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+#login:hover,
+#logout:hover {
+  opacity: 0.8;
+}
 
