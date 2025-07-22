@@ -13,6 +13,13 @@
 </head>
 
 <body data-tema="rosa">
+    <!-- Botones de autenticación -->
+  <div style="text-align: right; padding: 10px;">
+    <span id="user-info" style="margin-right: 10px;"></span>
+    <button id="login">Iniciar sesión con Google</button>
+    <button id="logout" style="display: none;">Cerrar sesión</button>
+  </div>
+  
   <h1>Arquitectura Colmayor</h1>
   <h2 class="subtitle">Malla Interactiva</h2>
 
@@ -150,4 +157,60 @@
       <p>byverofdez</p>
     </footer>
 </body>
+  <!-- Firebase SDKs -->
+<script type="module">
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/12.0.0/firebase-app.js";
+  import { getAuth, GoogleAuthProvider, signInWithPopup, signOut, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/12.0.0/firebase-auth.js";
+
+  const firebaseConfig = {
+    apiKey: "AIzaSyB4aWVr-kzxw_2QNLvKUURPCXhgEnDnsfI",
+    authDomain: "mallaarquitecturacolmayor.firebaseapp.com",
+    projectId: "mallaarquitecturacolmayor",
+    storageBucket: "mallaarquitecturacolmayor.firebasestorage.app",
+    messagingSenderId: "644554126592",
+    appId: "1:644554126592:web:c119ab45b73b6e734bafe5"
+  };
+
+  const app = initializeApp(firebaseConfig);
+  const auth = getAuth(app);
+  const provider = new GoogleAuthProvider();
+
+  const loginBtn = document.getElementById("login");
+  const logoutBtn = document.getElementById("logout");
+  const userInfo = document.getElementById("user-info");
+
+  loginBtn.addEventListener("click", () => {
+    signInWithPopup(auth, provider)
+      .then((result) => {
+        const user = result.user;
+        userInfo.textContent = `Hola, ${user.displayName}`;
+        loginBtn.style.display = "none";
+        logoutBtn.style.display = "inline-block";
+      })
+      .catch((error) => {
+        console.error("Error de inicio de sesión:", error);
+      });
+  });
+
+  logoutBtn.addEventListener("click", () => {
+    signOut(auth).then(() => {
+      userInfo.textContent = "";
+      loginBtn.style.display = "inline-block";
+      logoutBtn.style.display = "none";
+    });
+  });
+
+  onAuthStateChanged(auth, (user) => {
+    if (user) {
+      userInfo.textContent = `Hola, ${user.displayName}`;
+      loginBtn.style.display = "none";
+      logoutBtn.style.display = "inline-block";
+    } else {
+      userInfo.textContent = "";
+      loginBtn.style.display = "inline-block";
+      logoutBtn.style.display = "none";
+    }
+  });
+</script>
+
 </html>
